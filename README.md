@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# HackUNT Solo Challenge: Nico Nico Nii Location Logger
+
+creates users and then logs their location
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
