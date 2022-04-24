@@ -20,15 +20,18 @@ function App() {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      alert("Not and existing user");
+      alert("Not an existing user");
+      console.log("user: \"" + newName + "\" not found");
     }
 
     querySnapshot.forEach((doc) => {
       if (doc.get("password") == newPass) {
         alert("User found!");
+        console.log("Password matches for user: \"" + newName + "\"");
       }
       else {
         alert("Password incorrect");
+        console.log("Password does not match for user: \"" + newName + "\"");
       }
     });
   }
@@ -45,15 +48,25 @@ function App() {
 
   return (
     <div className="App">
+      <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">HackUNT Solo Challenge</span>
+        </div>
+      </nav>
+      <br></br>
       <div>
         <input placeholder='Username' onChange={(event) => { setNewName(event.target.value) }} />
+      </div>
+      <div>
         <input placeholder='Password' onChange={(event) => { setNewPass(event.target.value) }} />
       </div>
       <div>
-        <button onClick={createUser}>Create User</button>
-        <button onClick={checkUser}>Check User</button>
+        <button type="button" class="btn btn-primary" onClick={createUser}>Create User</button>
+        <button type="button" class="btn btn-primary" onClick={checkUser}>Check User</button>
       </div>
-
+      <br></br>
+      <br></br>
+      <a href="https://ibb.co/L92fcTY"><img src="https://i.ibb.co/8PSVfyN/jose-gregorio-nico-nico-nii.gif" alt="jose-gregorio-nico-nico-nii" border="0"></img></a>
     </div>
   );
 }
