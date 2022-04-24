@@ -1,6 +1,6 @@
-import logo from './logo.svg';
+
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { db } from './firebase';
 import { addDoc, collection, updateDoc } from 'firebase/firestore';
 import { getDocs, query, where, doc } from 'firebase/firestore';
@@ -10,12 +10,13 @@ function App() {
   const [newPass, setNewPass] = useState("");
   const [newLat, setNewLat] = useState(0);
   const [newLong, setNewLong] = useState(0);
-  const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "users");
   const [logId, setLogId] = useState("");
 
   const createUser = async () => {
     await addDoc(usersCollectionRef, { username: newName, password: newPass, latitude: newLat, longitude: newLong });
+    alert("User created!");
+    console.log("User created");
   }
 
   const checkUser = async () => {
@@ -59,35 +60,23 @@ function App() {
   };
 
   const showError = async (error) => {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        alert("User denied the request for Geolocation");
-        console.log("User denied the request for Geolocation");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert("Location information is unavailable");
-        console.log("Location information is unavailable");
-        break;
-      case error.TIMEOUT:
-        alert("The request to get user location timed out");
-        console.log("The request to get user location timed out");
-        break;
-      case error.UNKNOWN_ERROR:
-        alert("An unknown error occurred");
-        console.log("An unknown error occurred");
-        break;
+    if (error.code === error.PERMISSION_DENIED) {
+      alert("User denied the request for Geolocation");
+      console.log("User denied the request for Geolocation");
+    }
+    else if (error.code === error.POSITION_UNAVAILABLE) {
+      alert("Location information is unavailable");
+      console.log("Location information is unavailable");
+    }
+    else if (error.code === error.TIMEOUT) {
+      alert("The request to get user location timed out");
+      console.log("The request to get user location timed out");
+    }
+    else if (error.code === error.UNKNOWN_ERROR) {
+      alert("An unknown error occurred");
+      console.log("An unknown error occurred");
     }
   };
-
-  useEffect(() => {
-
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }
-
-    getUsers();
-  }, []);
 
   return (
     <div className="App">
