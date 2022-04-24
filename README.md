@@ -2,6 +2,19 @@
 
 Creates users and then logs their location
 
+## Tools and Services used:
+
+- Firebase
+- React
+- Bootstrap
+- Yarn
+
+### Credit to this youtube video for the beginnings of the application
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/jCY6DH8F4oc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
