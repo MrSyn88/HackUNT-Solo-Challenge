@@ -1,6 +1,6 @@
 # HackUNT Solo Challenge: Nico Nico Nii Location Logger
 
-creates users and then logs their location
+Creates users and then logs their location
 
 ## Getting Started with Create React App
 
