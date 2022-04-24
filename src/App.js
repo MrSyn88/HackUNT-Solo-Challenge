@@ -93,7 +93,7 @@ function App() {
     <div className="App">
       <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1">HackUNT Solo Challenge</span>
+          <span class="navbar-brand mb-0 h1">Nico Nico Nii Location Logger</span>
         </div>
       </nav>
       <br></br>
