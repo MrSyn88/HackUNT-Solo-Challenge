@@ -2,17 +2,20 @@ import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
 import { db } from './firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import { getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, updateDoc } from 'firebase/firestore';
+import { getDocs, query, where, doc } from 'firebase/firestore';
 
 function App() {
   const [newName, setNewName] = useState("");
   const [newPass, setNewPass] = useState("");
+  const [newLat, setNewLat] = useState(0);
+  const [newLong, setNewLong] = useState(0);
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "users");
+  const [logId, setLogId] = useState("");
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, { username: newName, password: newPass });
+    await addDoc(usersCollectionRef, { username: newName, password: newPass, latitude: newLat, longitude: newLong });
   }
 
   const checkUser = async () => {
@@ -25,16 +28,56 @@ function App() {
     }
 
     querySnapshot.forEach((doc) => {
-      if (doc.get("password") == newPass) {
-        alert("User found!");
+      if (doc.get("password") === newPass) {
         console.log("Password matches for user: \"" + newName + "\"");
+        setLogId(doc.id);
+        alert("Please choose allow and your location will be logged");
+        getLocation();
       }
       else {
         alert("Password incorrect");
         console.log("Password does not match for user: \"" + newName + "\"");
       }
     });
-  }
+  };
+
+  const getLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(logPosition, showError);
+    } else {
+      alert("Geolocation is not supported by this browser");
+      console.log("Geolocation is not supported by this browser");
+    }
+  };
+
+  const logPosition = async (position) => {
+    const userDoc = doc(db, "users", logId);
+    setNewLat(position.coords.latitude);
+    setNewLong(position.coords.longitude);
+    const newFields = { latitude: newLat, longitude: newLong };
+    await updateDoc(userDoc, newFields);
+  };
+
+  const showError = async (error) => {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation");
+        console.log("User denied the request for Geolocation");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable");
+        console.log("Location information is unavailable");
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out");
+        console.log("The request to get user location timed out");
+        break;
+      case error.UNKNOWN_ERROR:
+        alert("An unknown error occurred");
+        console.log("An unknown error occurred");
+        break;
+    }
+  };
 
   useEffect(() => {
 
@@ -62,7 +105,7 @@ function App() {
       </div>
       <div>
         <button type="button" class="btn btn-primary" onClick={createUser}>Create User</button>
-        <button type="button" class="btn btn-primary" onClick={checkUser}>Check User</button>
+        <button type="button" class="btn btn-primary" onClick={checkUser}>Log My Location</button>
       </div>
       <br></br>
       <br></br>
